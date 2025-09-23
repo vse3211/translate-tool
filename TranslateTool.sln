@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslateTool", "TranslateTool\TranslateTool.csproj", "{77AC06B2-F357-4466-A08E-9B4057182B1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslateTool.Shared", "TranslateTool.Shared\TranslateTool.Shared.csproj", "{F5C1A274-7A46-4CA6-9279-9D442C2B8F1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslateTool.Web", "TranslateTool.Web\TranslateTool.Web.csproj", "{9147BFD2-3EE6-4B46-9F06-5BF030C66A36}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77AC06B2-F357-4466-A08E-9B4057182B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77AC06B2-F357-4466-A08E-9B4057182B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77AC06B2-F357-4466-A08E-9B4057182B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77AC06B2-F357-4466-A08E-9B4057182B1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5C1A274-7A46-4CA6-9279-9D442C2B8F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5C1A274-7A46-4CA6-9279-9D442C2B8F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5C1A274-7A46-4CA6-9279-9D442C2B8F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5C1A274-7A46-4CA6-9279-9D442C2B8F1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9147BFD2-3EE6-4B46-9F06-5BF030C66A36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9147BFD2-3EE6-4B46-9F06-5BF030C66A36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9147BFD2-3EE6-4B46-9F06-5BF030C66A36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9147BFD2-3EE6-4B46-9F06-5BF030C66A36}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
