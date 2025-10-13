@@ -37,5 +37,37 @@ else
             <li>GameStrings @translateFile.Language.GameStrings.Record.Count @records["GameStrings"].Count</li>
         </ul>
     }
-    <p>@json</p>
+    <div desc="Groups">
+        @foreach (var group in records)
+        {
+            <h3>@group.Key</h3>
+            <div desc="@group.Key">
+                <ul>
+                    @foreach (var val in group.Value)
+                    {
+                        <li>
+                            @val.Key:
+                            <input value="@val.Value.Value" placeholder="Value" alt="Value"/>
+                            @if (val.Value.Description is not null)
+                            {
+                                <input value="@val.Value.Description"/>
+                            }
+                            else if (group.Key == "Things")
+                            {
+                                <button @onclick="() => { val.Value.Description = string.Empty; }">add desc.</button>
+                            }
+                            @if (val.Value.Description is not null)
+                            {
+                                <input value="@val.Value.Unit"/>
+                            }
+                            else if (group.Key == "Reagents")
+                            {
+                                <button @onclick="() => { val.Value.Unit = string.Empty; }">add unit</button>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
 }
