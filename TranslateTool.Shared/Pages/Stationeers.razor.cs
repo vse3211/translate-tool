@@ -32,6 +32,7 @@ public partial class Stationeers : ComponentBase
     {
         try
         {
+            records.Clear();
             file.Position = 0;
             sourceFile = new XmlDocument();
             sourceFile.Load(file);

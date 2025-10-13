@@ -48,17 +48,17 @@ else
                         <li>
                             @val.Key:
                             <input value="@val.Value.Value" placeholder="Value" alt="Value"/>
-                            @if (val.Value.Description is not null)
+                            @if (val.Value.Description is not null && group.Key == "Things")
                             {
-                                <input value="@val.Value.Description"/>
+                                <input value="@val.Value.Description" placeholder="Description"/>
                             }
                             else if (group.Key == "Things")
                             {
                                 <button @onclick="() => { val.Value.Description = string.Empty; }">add desc.</button>
                             }
-                            @if (val.Value.Description is not null)
+                            @if (val.Value.Unit is not null && group.Key == "Reagents")
                             {
-                                <input value="@val.Value.Unit"/>
+                                <input value="@val.Value.Unit" placeholder="Unit"/>
                             }
                             else if (group.Key == "Reagents")
                             {
