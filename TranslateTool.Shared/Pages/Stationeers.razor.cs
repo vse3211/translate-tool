@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Collections;
+using System.Xml;
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Newtonsoft.Json;
@@ -10,8 +11,11 @@ public partial class Stationeers : ComponentBase
     FluentInputFile? myFileByStream = default!;
     private bool isFileLoaded = false;
     private MemoryStream file = new();
+    private MemoryStream outFile = new();
     private string json = string.Empty;
     private Data.Stationeers.JSON.Main? translateFile = null;
+    private XmlDocument? sourceFile = null;
+    Dictionary<string, Dictionary<string, Data.Stationeers.XML.UniversalRecord>> records = new();
     protected override async Task OnInitializedAsync()
     {
     }
@@ -28,8 +32,57 @@ public partial class Stationeers : ComponentBase
         try
         {
             file.Position = 0;
-            XmlDocument sourceFile = new XmlDocument();
+            sourceFile = new XmlDocument();
             sourceFile.Load(file);
+
+            var nodes = sourceFile.ChildNodes.GetEnumerator();
+            while (nodes.MoveNext()) 
+            {
+                if (nodes.Current is not null)
+                {
+                    //if (typeof(System.Xml.XmlChildEnumerator) == nodes.Current.GetType())
+                    var n = nodes.Current;
+                    if (n.GetType() == typeof(XmlElement) && ((XmlElement)n).HasChildNodes)
+                    {
+                        var nE = ((XmlElement)n).ChildNodes.GetEnumerator();
+                        while (nE.MoveNext())
+                        {
+                            if (nE.Current.GetType() == typeof(XmlElement) && ((XmlElement)nE.Current).HasChildNodes)
+                            {
+                                var nD = ((XmlElement)nE.Current).ChildNodes.GetEnumerator();
+                                while (nD.MoveNext())
+                                {
+                                    var type = nD.Current.GetType().ToString();
+                                    if (nD.Current.GetType() == typeof(XmlText)) break;
+                                    switch (((XmlElement)nD.Current).Name)
+                                    {
+                                        case "RecordReagent":
+                                            var v0 = ((XmlElement)nD.Current).ChildNodes[0].InnerXml;
+                                            var v1 = ((XmlElement)nD.Current).ChildNodes[1].InnerXml;
+                                            var v2 = ((XmlElement)nD.Current).ChildNodes[2].InnerXml;
+                                            break;
+                                        case "Record":
+                                            var vr0 = ((XmlElement)nD.Current).ChildNodes[0].InnerXml;
+                                            var vr1 = ((XmlElement)nD.Current).ChildNodes[1].InnerXml;
+                                            break;
+                                        case "RecordThing":
+                                            var vt0 = ((XmlElement)nD.Current).ChildNodes[0].InnerXml;
+                                            var vt1 = ((XmlElement)nD.Current).ChildNodes[1].InnerXml;
+                                            var vt2 = ((XmlElement)nD.Current).ChildNodes[2].InnerXml;
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            
+            
+            outFile = new();
+            sourceFile.Save(outFile);
+
             json = JsonConvert.SerializeXmlNode(sourceFile);
             translateFile = JsonConvert.DeserializeObject<Data.Stationeers.JSON.Main>(json);
             isFileLoaded = true;
@@ -38,5 +91,16 @@ public partial class Stationeers : ComponentBase
         {
             Console.WriteLine(e);
         }
+    }
+    
+    public static List<object> SaveRest(IEnumerator e) {
+        var list = new List<object>();
+        while ( e.MoveNext() ) {
+            if (e.Current is not null)
+            {
+                list.Add(e.Current);
+            }
+        }
+        return list;
     }
 }
