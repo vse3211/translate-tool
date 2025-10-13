@@ -22,18 +22,19 @@ else
     <button @onclick="() => { isFileLoaded = false; StateHasChanged(); }">Reset</button>
     @if (translateFile is not null && isFileLoaded)
     {
+        <p>Name, JSON count, XML count</p>
         <ul>
-            <li>Reagents @translateFile.Language.Reagents.RecordReagent.Count</li>
-            <li>Gases @translateFile.Language.Gases.Record.Count</li>
-            <li>Actions @translateFile.Language.Actions.Record.Count</li>
-            <li>Things @translateFile.Language.Things.RecordThing.Count</li>
-            <li>Slots @translateFile.Language.Slots.Record.Count</li>
-            <li>Interactables @translateFile.Language.Interactables.Record.Count</li>
-            <li>Interface @translateFile.Language.Interface.Record.Count</li>
-            <li>Colors @translateFile.Language.Colors.Record.Count</li>
-            <li>Keys @translateFile.Language.Keys.Record.Count</li>
-            <li>Mineables @translateFile.Language.Mineables.Record.Count</li>
-            <li>GameStrings @translateFile.Language.GameStrings.Record.Count</li>
+            <li>Reagents @translateFile.Language.Reagents.RecordReagent.Count @records["Reagents"].Count</li>
+            <li>Gases @translateFile.Language.Gases.Record.Count @records["Gases"].Count</li>
+            <li>Actions @translateFile.Language.Actions.Record.Count @records["Actions"].Count</li>
+            <li>Things @translateFile.Language.Things.RecordThing.Count @records["Things"].Count</li>
+            <li>Slots @translateFile.Language.Slots.Record.Count @records["Slots"].Count</li>
+            <li>Interactables @translateFile.Language.Interactables.Record.Count @records["Interactables"].Count</li>
+            <li>Interface @translateFile.Language.Interface.Record.Count @records["Interface"].Count</li>
+            <li>Colors @translateFile.Language.Colors.Record.Count @records["Colors"].Count</li>
+            <li>Keys @translateFile.Language.Keys.Record.Count @records["Keys"].Count</li>
+            <li>Mineables @translateFile.Language.Mineables.Record.Count @records["Mineables"].Count</li>
+            <li>GameStrings @translateFile.Language.GameStrings.Record.Count @records["GameStrings"].Count</li>
         </ul>
     }
     <p>@json</p>
