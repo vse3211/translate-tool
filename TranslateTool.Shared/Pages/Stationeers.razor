@@ -7,7 +7,7 @@
                      AnchorId="MyUploadStream"
                      DragDropZoneVisible="false"
                      Mode="InputFileMode.Stream"
-                     Multiple="true"
+                     Multiple="false"
                      MaximumFileSize="@(20 * 1024 * 1024)"
                      Accept=".xml"
                      OnFileUploaded="@OnFileUploadedAsync"
@@ -20,6 +20,7 @@ else
 {
     <h1>Upload completed</h1>
     <button @onclick="() => { isFileLoaded = false; StateHasChanged(); }">Reset</button>
+    <button @onclick="StateHasChanged">StateHasChanged</button>
     @if (translateFile is not null && isFileLoaded)
     {
         <p>Name, JSON count, XML count</p>
@@ -47,10 +48,10 @@ else
                     {
                         <li>
                             @val.Key:
-                            <input value="@val.Value.Value" placeholder="Value" alt="Value"/>
+                            <input @bind="val.Value.Value" style="@getIsSavedStateStyle(val.Value, 0)" placeholder="Value" alt="Value"/>
                             @if (val.Value.Description is not null && group.Key == "Things")
                             {
-                                <input value="@val.Value.Description" placeholder="Description"/>
+                                <input @bind="val.Value.Description" style="@getIsSavedStateStyle(val.Value, 2)" placeholder="Description"/>
                             }
                             else if (group.Key == "Things")
                             {
@@ -58,7 +59,7 @@ else
                             }
                             @if (val.Value.Unit is not null && group.Key == "Reagents")
                             {
-                                <input value="@val.Value.Unit" placeholder="Unit"/>
+                                <input @bind="val.Value.Unit" style="@getIsSavedStateStyle(val.Value, 1)" placeholder="Unit"/>
                             }
                             else if (group.Key == "Reagents")
                             {

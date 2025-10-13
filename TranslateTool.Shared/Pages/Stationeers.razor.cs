@@ -74,12 +74,7 @@ public partial class Stationeers : ComponentBase
                                             if (v0 is not null && !records[((XmlElement)nE.Current).Name]
                                                 .ContainsKey(v0))
                                             {
-                                                records[((XmlElement)nE.Current).Name].Add(v0, new XML.UniversalRecord
-                                                {
-                                                    Key = v0,
-                                                    Value = v1 ?? "",
-                                                    Unit = v2
-                                                });
+                                                records[((XmlElement)nE.Current).Name].Add(v0, new XML.UniversalRecord(v0, v1, v2));
                                             }
                                             break;
                                         case "Record":
@@ -88,11 +83,7 @@ public partial class Stationeers : ComponentBase
                                             if (vr0 is not null && !records[((XmlElement)nE.Current).Name]
                                                     .ContainsKey(vr0))
                                             {
-                                                records[((XmlElement)nE.Current).Name].Add(vr0, new XML.UniversalRecord
-                                                {
-                                                    Key = vr0,
-                                                    Value = vr1 ?? ""
-                                                });
+                                                records[((XmlElement)nE.Current).Name].Add(vr0, new XML.UniversalRecord(vr0, vr1));
                                             }
                                             break;
                                         case "RecordThing":
@@ -102,12 +93,7 @@ public partial class Stationeers : ComponentBase
                                             if (vt0 is not null && !records[((XmlElement)nE.Current).Name]
                                                     .ContainsKey(vt0))
                                             {
-                                                records[((XmlElement)nE.Current).Name].Add(vt0, new XML.UniversalRecord
-                                                {
-                                                    Key = vt0,
-                                                    Value = vt1 ?? "",
-                                                    Description = vt2
-                                                });
+                                                records[((XmlElement)nE.Current).Name].Add(vt0, new XML.UniversalRecord(vt0, vt1, Description:vt2));
                                             }
                                             break;
                                     }
@@ -133,15 +119,24 @@ public partial class Stationeers : ComponentBase
             Console.WriteLine(e);
         }
     }
-    
-    public static List<object> SaveRest(IEnumerator e) {
-        var list = new List<object>();
-        while ( e.MoveNext() ) {
-            if (e.Current is not null)
-            {
-                list.Add(e.Current);
-            }
+
+    private string getIsSavedStateStyle(Data.Stationeers.XML.UniversalRecord record, int valueType)
+    {
+        switch (valueType)
+        {
+            case 0:
+                if (record.IsValueChanged) return _isSavedStateStyle;
+                break;
+            case 1:
+                if (record.IsUnitChanged) return _isSavedStateStyle;
+                break;
+            case 2:
+                if (record.IsDescriptionChanged) return _isSavedStateStyle;
+                break;
         }
-        return list;
+        return _isNotSavedStateStyle;
     }
+
+    private string _isSavedStateStyle = "border-color: black; border-width: 1px;";
+    private string _isNotSavedStateStyle = "border-color: palegreen; border-width: 2px;";
 }
