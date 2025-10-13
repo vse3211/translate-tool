@@ -51,13 +51,13 @@ public class JSON
     /// </summary>
     public class Reagents
     {
-        public required List<RecordReagents> RecordReagents { get; set; }
+        public required List<RecordReagent> RecordReagent { get; set; }
     }
 
     /// <summary>
     /// Used for store Reagents translation
     /// </summary>
-    public class RecordReagents : Record
+    public class RecordReagent : Record
     {
         public string Unit { get; set; }
     }

@@ -20,5 +20,21 @@ else
 {
     <h1>Upload completed</h1>
     <button @onclick="() => { isFileLoaded = false; StateHasChanged(); }">Reset</button>
+    @if (translateFile is not null && isFileLoaded)
+    {
+        <ul>
+            <li>Reagents @translateFile.Language.Reagents.RecordReagent.Count</li>
+            <li>Gases @translateFile.Language.Gases.Record.Count</li>
+            <li>Actions @translateFile.Language.Actions.Record.Count</li>
+            <li>Things @translateFile.Language.Things.RecordThing.Count</li>
+            <li>Slots @translateFile.Language.Slots.Record.Count</li>
+            <li>Interactables @translateFile.Language.Interactables.Record.Count</li>
+            <li>Interface @translateFile.Language.Interface.Record.Count</li>
+            <li>Colors @translateFile.Language.Colors.Record.Count</li>
+            <li>Keys @translateFile.Language.Keys.Record.Count</li>
+            <li>Mineables @translateFile.Language.Mineables.Record.Count</li>
+            <li>GameStrings @translateFile.Language.GameStrings.Record.Count</li>
+        </ul>
+    }
     <p>@json</p>
 }

@@ -11,6 +11,7 @@ public partial class Stationeers : ComponentBase
     private bool isFileLoaded = false;
     private MemoryStream file = new();
     private string json = string.Empty;
+    private Data.Stationeers.JSON.Main? translateFile = null;
     protected override async Task OnInitializedAsync()
     {
     }
@@ -30,7 +31,7 @@ public partial class Stationeers : ComponentBase
             XmlDocument sourceFile = new XmlDocument();
             sourceFile.Load(file);
             json = JsonConvert.SerializeXmlNode(sourceFile);
-            
+            translateFile = JsonConvert.DeserializeObject<Data.Stationeers.JSON.Main>(json);
             isFileLoaded = true;
         }
         catch (Exception e)
