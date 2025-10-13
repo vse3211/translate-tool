@@ -10,6 +10,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddFluentUIComponents();
 
+
 // Add device-specific services used by the TranslateTool.Shared project
 builder.Services.AddSingleton<IFormFactor, FormFactor>();
 

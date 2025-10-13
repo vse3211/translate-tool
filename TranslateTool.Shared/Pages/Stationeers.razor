@@ -1,3 +1,24 @@
 ﻿@page "/Stationeers"
 <h3>Stationeers</h3>
 
+@if (!isFileLoaded)
+{
+    <FluentInputFile @ref="@myFileByStream"
+                     AnchorId="MyUploadStream"
+                     DragDropZoneVisible="false"
+                     Mode="InputFileMode.Stream"
+                     Multiple="true"
+                     MaximumFileSize="@(20 * 1024 * 1024)"
+                     Accept=".xml"
+                     OnFileUploaded="@OnFileUploadedAsync"
+                     OnCompleted="@OnCompleted" />
+    <FluentButton Appearance="Appearance.Accent" Id="MyUploadStream">
+        Upload files
+    </FluentButton>
+}
+else
+{
+    <h1>Upload completed</h1>
+    <button @onclick="() => { isFileLoaded = false; StateHasChanged(); }">Reset</button>
+    <p>@json</p>
+}
