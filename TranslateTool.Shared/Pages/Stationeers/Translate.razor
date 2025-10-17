@@ -39,6 +39,9 @@ else
     <FluentButton @onclick="() => { Localizations[MyLanguage]._hideTranslated = !Localizations[MyLanguage]._hideTranslated; }">
         @(Localizations[MyLanguage]._hideTranslated ? "Show" : "Hide") translated
     </FluentButton>
+    <FluentButton @onclick="() => AppState.MainLocalization = MyLanguage">
+        @(AppState.MainLocalization == MyLanguage ? "Already main" : "Make as main")
+    </FluentButton>
     @if (Localizations[MyLanguage].isFileLoaded && !Localizations[MyLanguage]._hideCounts)
     {
         <table>
@@ -79,11 +82,11 @@ else
                                  val.Value.IsUnitChanged ||
                                  val.Value.IsValueChanged ||
                                  !Localizations[MyLanguage]._hideTranslated ||
-                                 (!String.IsNullOrWhiteSpace(MainLocalization) &&
-                                  Localizations[MainLocalization].records.ContainsKey(val.Key) &&
-                                  (Localizations[MainLocalization].records[group.Key][val.Key].Value == val.Value.Value ||
-                                   Localizations[MainLocalization].records[group.Key][val.Key].Description == val.Value.Description ||
-                                   Localizations[MainLocalization].records[group.Key][val.Key].Unit == val.Value.Unit)))
+                                 (!String.IsNullOrWhiteSpace(AppState.MainLocalization) &&
+                                  Localizations[AppState.MainLocalization].records[group.Key].ContainsKey(val.Key) &&
+                                  (Localizations[AppState.MainLocalization].records[group.Key][val.Key].Value == val.Value.Value ||
+                                   (group.Key == "Things" && Localizations[AppState.MainLocalization].records[group.Key][val.Key].Description == val.Value.Description) ||
+                                   (group.Key == "Reagents" && Localizations[AppState.MainLocalization].records[group.Key][val.Key].Unit == val.Value.Unit))))
                             {
                                 <li>
                                     @val.Key:

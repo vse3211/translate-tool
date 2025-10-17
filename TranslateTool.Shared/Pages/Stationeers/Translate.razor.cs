@@ -12,10 +12,7 @@ public partial class Translate : ComponentBase
     public required string MyLanguage { get; set; }
     
     [Parameter]
-    public required string MainLocalization { get; set; }
-    
-    [Parameter]
-    public required string SelectedWord { get; set; }
+    public required State AppState { get; set; }
 
     [Parameter]
     public required Dictionary<string, ComponentContent>
