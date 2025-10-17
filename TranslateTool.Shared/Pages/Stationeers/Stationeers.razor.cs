@@ -16,7 +16,9 @@ public partial class Stationeers : ComponentBase
     private string json = string.Empty;
     private Data.Stationeers.JSON.Main? translateFile = null;
     private XmlDocument? sourceFile = null;
-    Dictionary<string, Dictionary<string, Data.Stationeers.XML.UniversalRecord>> records = new();
+    private Dictionary<string, Dictionary<string, Data.Stationeers.XML.UniversalRecord>> records = new();
+    private Dictionary<string, bool> _hideGroups = new();
+    private bool _hideCounts = true;
     protected override async Task OnInitializedAsync()
     {
     }
@@ -62,6 +64,7 @@ public partial class Stationeers : ComponentBase
                                         if (!records.ContainsKey(((XmlElement)nE.Current).Name))
                                         {
                                             records.Add(((XmlElement)nE.Current).Name, new());
+                                            _hideGroups.Add(((XmlElement)nE.Current).Name, true);
                                         }
                                         nE_Exists = true;
                                     }
