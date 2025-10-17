@@ -136,16 +136,16 @@ public partial class Translate : ComponentBase
         switch (valueType)
         {
             case 0:
-                if (record.IsValueChanged) return _isSavedStateStyle;
+                if (record.IsValueChanged) return _isNotSavedStateStyle;
                 break;
             case 1:
-                if (record.IsUnitChanged) return _isSavedStateStyle;
+                if (record.IsUnitChanged) return _isNotSavedStateStyle;
                 break;
             case 2:
-                if (record.IsDescriptionChanged) return _isSavedStateStyle;
+                if (record.IsDescriptionChanged) return _isNotSavedStateStyle;
                 break;
         }
-        return _isNotSavedStateStyle;
+        return _isSavedStateStyle;
     }
 
     private string _isSavedStateStyle = "border-color: black; border-width: 1px;";

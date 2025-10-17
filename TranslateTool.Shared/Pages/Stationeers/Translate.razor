@@ -36,6 +36,9 @@ else
     <FluentButton @onclick="() => { Localizations[MyLanguage]._hideCounts = !Localizations[MyLanguage]._hideCounts; }">
         @(Localizations[MyLanguage]._hideCounts ? "Show" : "Hide") counter
     </FluentButton>
+    <FluentButton @onclick="() => { Localizations[MyLanguage]._hideTranslated = !Localizations[MyLanguage]._hideTranslated; }">
+        @(Localizations[MyLanguage]._hideTranslated ? "Show" : "Hide") translated
+    </FluentButton>
     @if (Localizations[MyLanguage].isFileLoaded && !Localizations[MyLanguage]._hideCounts)
     {
         <table>
@@ -72,26 +75,37 @@ else
                     <ul>
                         @foreach (var val in group.Value)
                         {
-                            <li>
-                                @val.Key:
-                                <textarea @bind="val.Value.Value" style="@getIsSavedStateStyle(val.Value, 0)" placeholder="Value" alt="Value"></textarea>
-                                @if (val.Value.Description is not null && group.Key == "Things")
-                                {
-                                    <textarea @bind="val.Value.Description" style="@getIsSavedStateStyle(val.Value, 2)" placeholder="Description"></textarea>
-                                }
-                                else if (group.Key == "Things")
-                                {
-                                    <button @onclick="() => { val.Value.Description = string.Empty; }">add desc.</button>
-                                }
-                                @if (val.Value.Unit is not null && group.Key == "Reagents")
-                                {
-                                    <textarea @bind="val.Value.Unit" style="@getIsSavedStateStyle(val.Value, 1)" placeholder="Unit"></textarea>
-                                }
-                                else if (group.Key == "Reagents")
-                                {
-                                    <button @onclick="() => { val.Value.Unit = string.Empty; }">add unit</button>
-                                }
-                            </li>
+                            @if (val.Value.IsDescriptionChanged ||
+                                 val.Value.IsUnitChanged ||
+                                 val.Value.IsValueChanged ||
+                                 !Localizations[MyLanguage]._hideTranslated ||
+                                 (!String.IsNullOrWhiteSpace(MainLocalization) &&
+                                  Localizations[MainLocalization].records.ContainsKey(val.Key) &&
+                                  (Localizations[MainLocalization].records[group.Key][val.Key].Value == val.Value.Value ||
+                                   Localizations[MainLocalization].records[group.Key][val.Key].Description == val.Value.Description ||
+                                   Localizations[MainLocalization].records[group.Key][val.Key].Unit == val.Value.Unit)))
+                            {
+                                <li>
+                                    @val.Key:
+                                    <textarea @bind="val.Value.Value" style="@getIsSavedStateStyle(val.Value, 0)" placeholder="Value" alt="Value"></textarea>
+                                    @if (val.Value.Description is not null && group.Key == "Things")
+                                    {
+                                        <textarea @bind="val.Value.Description" style="@getIsSavedStateStyle(val.Value, 2)" placeholder="Description"></textarea>
+                                    }
+                                    else if (group.Key == "Things")
+                                    {
+                                        <button @onclick="() => { val.Value.Description = string.Empty; }">add desc.</button>
+                                    }
+                                    @if (val.Value.Unit is not null && group.Key == "Reagents")
+                                    {
+                                        <textarea @bind="val.Value.Unit" style="@getIsSavedStateStyle(val.Value, 1)" placeholder="Unit"></textarea>
+                                    }
+                                    else if (group.Key == "Reagents")
+                                    {
+                                        <button @onclick="() => { val.Value.Unit = string.Empty; }">add unit</button>
+                                    }
+                                </li>
+                            }
                         }
                     </ul>
                 }

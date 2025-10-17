@@ -52,17 +52,17 @@ public class XML
         /// <summary>
         /// Changed state for
         /// </summary>
-        public bool IsValueChanged => _savedValue == _currentValue;
+        public bool IsValueChanged => _savedValue != _currentValue;
         
         /// <summary>
         /// Changed state for
         /// </summary>
-        public bool IsUnitChanged => _savedUnit == _currentUnit;
+        public bool IsUnitChanged => _savedUnit != _currentUnit;
         
         /// <summary>
         /// Changed state for
         /// </summary>
-        public bool IsDescriptionChanged => _savedDescription == _currentDescription;
+        public bool IsDescriptionChanged => _savedDescription != _currentDescription;
         
         /// <summary>
         /// Make Value state is saved

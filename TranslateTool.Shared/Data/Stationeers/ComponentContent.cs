@@ -15,4 +15,5 @@ public class ComponentContent
     public Dictionary<string, Dictionary<string, Data.Stationeers.XML.UniversalRecord>> records { get; set; } = new();
     public Dictionary<string, bool> _hideGroups = new();
     public bool _hideCounts = true;
+    public bool _hideTranslated = false;
 }
