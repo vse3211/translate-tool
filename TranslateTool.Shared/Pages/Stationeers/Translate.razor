@@ -1,5 +1,101 @@
-﻿<h3>Translate</h3>
+﻿@if (!Localizations[MyLanguage].isFileLoaded)
+{
+    <FluentInputFile
+        Id="translate-upload"
+        @ref="@Localizations[MyLanguage].myFileByStream"
+        Class="h-[300px]"
+        Mode="InputFileMode.Stream"
+        Multiple="false"
+        MaximumFileSize="@(20 * 1024 * 1024)"
+        Accept=".xml"
+        OnFileUploaded="@OnFileUploadedAsync"
+        OnCompleted="@OnCompleted">
+        <ChildContent>
+            <label for="translate-upload">
+                <FluentIcon Value="@(new @Icons.Regular.Size24.ArrowUpload())" />
+            </label>
 
-@code {
-    
+            <div>
+                Drag file here you wish to upload,
+                or <label for="translate-upload">browse</label>
+                for them<span style="color: red;">*</span>.
+            </div>
+
+            <div>
+                <br />
+                <p>Support XML file</p>
+            </div>
+        </ChildContent>
+    </FluentInputFile>
+}
+else
+{
+    <h1>@MyLanguage</h1>
+    <FluentButton Color="red" @onclick="() => { Localizations[MyLanguage].isFileLoaded = false; StateHasChanged(); }">Reset</FluentButton>
+    <FluentButton Color="goldenrod" @onclick="StateHasChanged">StateHasChanged</FluentButton>
+    <FluentButton @onclick="() => { Localizations[MyLanguage]._hideCounts = !Localizations[MyLanguage]._hideCounts; }">
+        @(Localizations[MyLanguage]._hideCounts ? "Show" : "Hide") counter
+    </FluentButton>
+    @if (Localizations[MyLanguage].isFileLoaded && !Localizations[MyLanguage]._hideCounts)
+    {
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Count</th>
+            </tr>
+            <tr>
+                @foreach (var g in Localizations[MyLanguage].records)
+                {
+                    <tr>
+                        <td>@g.Key</td>
+                        <td>@g.Value.Count</td>
+                    </tr>
+                }
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    }
+    <div desc="Groups">
+        @foreach (var group in Localizations[MyLanguage].records)
+        {
+            <div class="flex">
+                <FluentButton @onclick="() => { Localizations[MyLanguage]._hideGroups[group.Key] = !Localizations[MyLanguage]._hideGroups[group.Key]; }">
+                    @(Localizations[MyLanguage]._hideGroups[group.Key] ? "+" : "-")
+                </FluentButton>
+                <h3>@group.Key: @Localizations[MyLanguage].records[group.Key].Count</h3>
+            </div>
+            <div desc="@group.Key">
+                @if (!Localizations[MyLanguage]._hideGroups[group.Key])
+                {
+                    <ul>
+                        @foreach (var val in group.Value)
+                        {
+                            <li>
+                                @val.Key:
+                                <textarea @bind="val.Value.Value" style="@getIsSavedStateStyle(val.Value, 0)" placeholder="Value" alt="Value"></textarea>
+                                @if (val.Value.Description is not null && group.Key == "Things")
+                                {
+                                    <textarea @bind="val.Value.Description" style="@getIsSavedStateStyle(val.Value, 2)" placeholder="Description"></textarea>
+                                }
+                                else if (group.Key == "Things")
+                                {
+                                    <button @onclick="() => { val.Value.Description = string.Empty; }">add desc.</button>
+                                }
+                                @if (val.Value.Unit is not null && group.Key == "Reagents")
+                                {
+                                    <textarea @bind="val.Value.Unit" style="@getIsSavedStateStyle(val.Value, 1)" placeholder="Unit"></textarea>
+                                }
+                                else if (group.Key == "Reagents")
+                                {
+                                    <button @onclick="() => { val.Value.Unit = string.Empty; }">add unit</button>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+    </div>
 }

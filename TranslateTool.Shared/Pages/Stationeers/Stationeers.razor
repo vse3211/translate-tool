@@ -1,104 +1,19 @@
 ﻿@page "/Stationeers"
+@using TranslateTool.Shared.Data.Stationeers
 <h3>Stationeers</h3>
 
-@if (!isFileLoaded)
-{
-    <FluentInputFile
-        Id="translate-upload"
-        @ref="@myFileByStream"
-        Class="h-[300px]"
-        Mode="InputFileMode.Stream"
-        Multiple="false"
-        MaximumFileSize="@(20 * 1024 * 1024)"
-        Accept=".xml"
-        OnFileUploaded="@OnFileUploadedAsync"
-        OnCompleted="@OnCompleted">
-        <ChildContent>
-            <label for="translate-upload">
-                <FluentIcon Value="@(new @Icons.Regular.Size24.ArrowUpload())" />
-            </label>
+<FluentButton @onclick="() => _localizations.Add(DateTime.UtcNow.ToFileTime().ToString(), new())">Add localization</FluentButton>
+<FluentButton Color="goldenrod" @onclick="StateHasChanged">StateHasChanged</FluentButton>
 
-            <div>
-                Drag file here you wish to upload,
-                or <label for="translate-upload">browse</label>
-                for them<span style="color: red;">*</span>.
-            </div>
-
-            <div>
-                <br />
-                <p>Support XML file</p>
-            </div>
-        </ChildContent>
-    </FluentInputFile>
-}
-else
-{
-    <h1>@sourceFile?.SelectSingleNode("//Language/Name")?.InnerText</h1>
-    <FluentButton Color="red" @onclick="() => { isFileLoaded = false; StateHasChanged(); }">Reset</FluentButton>
-    <FluentButton Color="goldenrod" @onclick="StateHasChanged">StateHasChanged</FluentButton>
-    <FluentButton @onclick="() => { _hideCounts = !_hideCounts; }">
-        @(_hideCounts ? "Show" : "Hide") counter
-    </FluentButton>
-    @if (translateFile is not null && isFileLoaded && !_hideCounts)
+<div class="flex">
+    @foreach (var l in _localizations)
     {
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Count</th>
-            </tr>
-            <tr>
-                @foreach (var g in records)
-                {
-                    <tr>
-                        <td>@g.Key</td>
-                        <td>@g.Value.Count</td>
-                    </tr>
-                }
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+            <Translate Localizations="@_localizations"
+                       MyLanguage="@l.Key"
+                       MainLocalization="@_mainLocalization"
+                       SelectedWord="@_selectedWord"/>
+        </div>
     }
-    <div desc="Groups">
-        @foreach (var group in records)
-        {
-            <div class="flex">
-                <FluentButton @onclick="() => { _hideGroups[group.Key] = !_hideGroups[group.Key]; }">
-                    @(_hideGroups[group.Key] ? "+" : "-")
-                </FluentButton>
-                <h3>@group.Key: @records[group.Key].Count</h3>
-            </div>
-            <div desc="@group.Key">
-                @if (!_hideGroups[group.Key])
-                {
-                    <ul>
-                        @foreach (var val in group.Value)
-                        {
-                            <li>
-                                @val.Key:
-                                <textarea @bind="val.Value.Value" style="@getIsSavedStateStyle(val.Value, 0)" placeholder="Value" alt="Value"></textarea>
-                                @if (val.Value.Description is not null && group.Key == "Things")
-                                {
-                                    <textarea @bind="val.Value.Description" style="@getIsSavedStateStyle(val.Value, 2)" placeholder="Description"></textarea>
-                                }
-                                else if (group.Key == "Things")
-                                {
-                                    <button @onclick="() => { val.Value.Description = string.Empty; }">add desc.</button>
-                                }
-                                @if (val.Value.Unit is not null && group.Key == "Reagents")
-                                {
-                                    <textarea @bind="val.Value.Unit" style="@getIsSavedStateStyle(val.Value, 1)" placeholder="Unit"></textarea>
-                                }
-                                else if (group.Key == "Reagents")
-                                {
-                                    <button @onclick="() => { val.Value.Unit = string.Empty; }">add unit</button>
-                                }
-                            </li>
-                        }
-                    </ul>
-                }
-            </div>
-        }
-    </div>
-}
+</div>
+
