@@ -5,7 +5,7 @@ using Microsoft.FluentUI.AspNetCore.Components;
 using Newtonsoft.Json;
 using TranslateTool.Shared.Data.Stationeers;
 
-namespace TranslateTool.Shared.Pages;
+namespace TranslateTool.Shared.Pages.Stationeers;
 
 public partial class Stationeers : ComponentBase
 {
