@@ -1,6 +1,7 @@
 ﻿@page "/Stationeers"
 @using TranslateTool.Shared.Data.Stationeers
 <h3>Stationeers</h3>
+<h4 style="color:darkred">ALWAYS make BACKUPS!</h4>
 
 <FluentButton @onclick="() => _localizations.Add(DateTime.UtcNow.ToFileTime().ToString(), new())">Add localization</FluentButton>
 
