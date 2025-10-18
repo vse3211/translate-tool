@@ -85,8 +85,12 @@ else
                                  (!String.IsNullOrWhiteSpace(AppState.MainLocalization) &&
                                   Localizations[AppState.MainLocalization].records[group.Key].ContainsKey(val.Key) &&
                                   (Localizations[AppState.MainLocalization].records[group.Key][val.Key].Value == val.Value.Value ||
-                                   (group.Key == "Things" && Localizations[AppState.MainLocalization].records[group.Key][val.Key].Description == val.Value.Description) ||
-                                   (group.Key == "Reagents" && Localizations[AppState.MainLocalization].records[group.Key][val.Key].Unit == val.Value.Unit))))
+                                   (group.Key == "Things" &&
+                                    !String.IsNullOrWhiteSpace(Localizations[AppState.MainLocalization].records[group.Key][val.Key].Description) &&
+                                    Localizations[AppState.MainLocalization].records[group.Key][val.Key].Description == val.Value.Description) ||
+                                   (group.Key == "Reagents" &&
+                                    !String.IsNullOrWhiteSpace(Localizations[AppState.MainLocalization].records[group.Key][val.Key].Unit) &&
+                                    Localizations[AppState.MainLocalization].records[group.Key][val.Key].Unit == val.Value.Unit))))
                             {
                                 <li>
                                     @val.Key:
