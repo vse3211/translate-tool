@@ -35,9 +35,15 @@ else
     <FluentButton @onclick="() => { Localizations[MyLanguage]._hideCounts = !Localizations[MyLanguage]._hideCounts; }">
         @(Localizations[MyLanguage]._hideCounts ? "Show" : "Hide") counter
     </FluentButton>
-    <FluentButton @onclick="() => { Localizations[MyLanguage]._hideTranslated = !Localizations[MyLanguage]._hideTranslated; }">
-        @(Localizations[MyLanguage]._hideTranslated ? "Show" : "Hide") translated
-    </FluentButton>
+    @if (!String.IsNullOrWhiteSpace(AppState.MainLocalization) && AppState.MainLocalization != MyLanguage)
+    {
+        <FluentButton @onclick="TrimUnusedValues">
+            Trim unused
+        </FluentButton>
+        <FluentButton @onclick="() => { Localizations[MyLanguage]._hideTranslated = !Localizations[MyLanguage]._hideTranslated; }">
+            @(Localizations[MyLanguage]._hideTranslated ? "Show" : "Hide") translated
+        </FluentButton>
+    }
     <FluentButton @onclick="() => AppState.MainLocalization = MyLanguage">
         @(AppState.MainLocalization == MyLanguage ? "Already main" : "Make as main")
     </FluentButton>

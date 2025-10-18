@@ -128,6 +128,23 @@ public partial class Translate : ComponentBase
         }
     }
 
+    private void TrimUnusedValues()
+    {
+        foreach (var l in Localizations[MyLanguage].records)
+        {
+            foreach (var r in l.Value)
+            {
+                if (!Localizations[AppState.MainLocalization].records[l.Key].ContainsKey(r.Key))
+                {
+                    l.Value.Remove(r.Key);
+                    var node = Localizations[MyLanguage].sourceFile
+                        .SelectSingleNode(@$"//Language/{l.Key}/RecordReagent[Key='{r.Key}']");
+                    node.ParentNode.RemoveChild(node);
+                }
+            }
+        }
+    }
+
     private string getIsSavedStateStyle(Data.Stationeers.XML.UniversalRecord record, int valueType)
     {
         switch (valueType)
