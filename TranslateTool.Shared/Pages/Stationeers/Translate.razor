@@ -32,7 +32,6 @@ else
 {
     <h1>@MyLanguage</h1>
     <FluentButton Color="red" @onclick="() => { Localizations[MyLanguage].isFileLoaded = false; StateHasChanged(); }">Reset</FluentButton>
-    <FluentButton Color="goldenrod" @onclick="StateHasChanged">StateHasChanged</FluentButton>
     <FluentButton @onclick="() => { Localizations[MyLanguage]._hideCounts = !Localizations[MyLanguage]._hideCounts; }">
         @(Localizations[MyLanguage]._hideCounts ? "Show" : "Hide") counter
     </FluentButton>

@@ -3,7 +3,6 @@
 <h3>Stationeers</h3>
 
 <FluentButton @onclick="() => _localizations.Add(DateTime.UtcNow.ToFileTime().ToString(), new())">Add localization</FluentButton>
-<FluentButton Color="goldenrod" @onclick="StateHasChanged">StateHasChanged</FluentButton>
 
 <div class="flex">
     @foreach (var l in _localizations)
