@@ -154,6 +154,53 @@ public partial class Translate : ComponentBase
 
     private async Task Save()
     {
+        foreach (var l in Localizations[MyLanguage].records)
+        {
+            foreach (var r in l.Value)
+            {
+                switch (l.Key)
+                {
+                    case "Things":
+                        var thing = Localizations[MyLanguage].sourceFile?
+                            .SelectSingleNode(@$"//Language/{l.Key}/RecordThing[Key='{r.Key}']");
+                        if (r.Value.IsValueChanged)
+                        {
+                            thing.ChildNodes[1].InnerText = r.Value.Value;
+                            r.Value.SaveValue();
+                        }
+                        if (r.Value.IsDescriptionChanged)
+                        {
+                            thing.ChildNodes[2].InnerText = r.Value.Description;
+                            r.Value.SaveDescription();
+                        }
+                        break;
+                    case "Reagents":
+                        var reagent = Localizations[MyLanguage].sourceFile?
+                            .SelectSingleNode(@$"//Language/{l.Key}/RecordReagent[Key='{r.Key}']");
+                        if (r.Value.IsValueChanged)
+                        {
+                            reagent.ChildNodes[1].InnerText = r.Value.Value;
+                            r.Value.SaveValue();
+                        }
+                        if (r.Value.IsUnitChanged)
+                        {
+                            reagent.ChildNodes[2].InnerText = r.Value.Unit;
+                            r.Value.SaveUnit();
+                        }
+                        break;
+                    default:
+                        var record = Localizations[MyLanguage].sourceFile?
+                            .SelectSingleNode(@$"//Language/{l.Key}/Record[Key='{r.Key}']");
+                        if (r.Value.IsValueChanged)
+                        {
+                            record.ChildNodes[1].InnerText = r.Value.Value;
+                            r.Value.SaveValue();
+                        }
+                        break;
+                }
+            }
+        }
+        
         Localizations[MyLanguage].outFile = new MemoryStream();
         Localizations[MyLanguage].sourceFile?.Save(Localizations[MyLanguage].outFile);
         switch (FormFactor.GetFormFactor())
