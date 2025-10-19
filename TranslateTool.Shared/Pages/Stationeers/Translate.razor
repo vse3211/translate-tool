@@ -31,7 +31,8 @@
 else
 {
     <h1>@MyLanguage</h1>
-    <FluentButton Color="red" @onclick="() => { Localizations[MyLanguage].isFileLoaded = false; StateHasChanged(); }">Reset</FluentButton>
+    <FluentButton Color="red" @onclick="() => { Localizations[MyLanguage] = new(); StateHasChanged(); }">Reset</FluentButton>
+    <FluentButton Color="goldenrod" @onclick="StateHasChanged">Refresh UI</FluentButton>
     <FluentButton @onclick="() => { Localizations[MyLanguage]._hideCounts = !Localizations[MyLanguage]._hideCounts; }">
         @(Localizations[MyLanguage]._hideCounts ? "Show" : "Hide") counter
     </FluentButton>
@@ -46,6 +47,9 @@ else
     }
     <FluentButton @onclick="() => AppState.MainLocalization = MyLanguage">
         @(AppState.MainLocalization == MyLanguage ? "Already main" : "Make as main")
+    </FluentButton>
+    <FluentButton @onclick="Save">
+        Save
     </FluentButton>
     @if (Localizations[MyLanguage].isFileLoaded && !Localizations[MyLanguage]._hideCounts)
     {

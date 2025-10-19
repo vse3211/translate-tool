@@ -12,6 +12,7 @@ public class ComponentContent
     public MemoryStream file = new();
     public MemoryStream outFile = new();
     public XmlDocument? sourceFile = null;
+    public string FileName = "";
     public Dictionary<string, Dictionary<string, Data.Stationeers.XML.UniversalRecord>> records { get; set; } = new();
     public Dictionary<string, bool> _hideGroups = new();
     public bool _hideCounts = true;

@@ -1,13 +1,19 @@
-﻿using System.Xml;
+﻿using System.Reflection.Metadata;
+using System.Text;
+using System.Xml;
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using TranslateTool.Shared.Data.Stationeers;
+using TranslateTool.Shared.Services;
 
 namespace TranslateTool.Shared.Pages.Stationeers;
 
 public partial class Translate : ComponentBase
 {
+    [Inject] IJSRuntime JSRuntime { get; set; }
+    [Inject] IFormFactor FormFactor { get; set; }
     [Parameter]
     public required string MyLanguage { get; set; }
     
@@ -33,6 +39,7 @@ public partial class Translate : ComponentBase
             Localizations[MyLanguage].file.Position = 0;
             Localizations[MyLanguage].sourceFile = new XmlDocument();
             Localizations[MyLanguage].sourceFile?.Load(Localizations[MyLanguage].file);
+            Localizations[MyLanguage].FileName = files.First().Name;
 
             var nodes = Localizations[MyLanguage].sourceFile?.ChildNodes.GetEnumerator();
             while (nodes.MoveNext()) 
@@ -137,11 +144,29 @@ public partial class Translate : ComponentBase
                 if (!Localizations[AppState.MainLocalization].records[l.Key].ContainsKey(r.Key))
                 {
                     l.Value.Remove(r.Key);
-                    var node = Localizations[MyLanguage].sourceFile
+                    var node = Localizations[MyLanguage].sourceFile?
                         .SelectSingleNode(@$"//Language/{l.Key}/RecordReagent[Key='{r.Key}']");
-                    node.ParentNode.RemoveChild(node);
+                    node?.ParentNode?.RemoveChild(node);
                 }
             }
+        }
+    }
+
+    private async Task Save()
+    {
+        Localizations[MyLanguage].outFile = new MemoryStream();
+        Localizations[MyLanguage].sourceFile?.Save(Localizations[MyLanguage].outFile);
+        switch (FormFactor.GetFormFactor())
+        {
+            case "Desktop":
+            case "Web":
+                await JSRuntime.InvokeVoidAsync(
+                    "saveFile",
+                    Localizations[MyLanguage].FileName,
+                    Encoding.UTF8.GetString(Localizations[MyLanguage].outFile.ToArray()));
+                break;
+            default:
+                break;
         }
     }
 
