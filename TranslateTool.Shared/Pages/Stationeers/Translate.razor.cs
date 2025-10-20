@@ -217,6 +217,49 @@ public partial class Translate : ComponentBase
         }
     }
 
+    private bool CanShowRow(KeyValuePair<string, Dictionary<string, XML.UniversalRecord>> group, KeyValuePair<string, XML.UniversalRecord> val)
+    {
+        if (val.Key == "Corn")
+        {
+        }
+        if (!Localizations[MyLanguage]._hideTranslated) return true;
+        if (val.Value.IsDescriptionChanged ||
+            val.Value.IsUnitChanged ||
+            val.Value.IsValueChanged) return false;
+        if (!String.IsNullOrWhiteSpace(AppState.MainLocalization))
+        {
+            if (Localizations[AppState.MainLocalization].records[group.Key].ContainsKey(val.Key))
+            {
+                if (Localizations[AppState.MainLocalization].records[group.Key][val.Key].Value !=
+                    val.Value.Value)
+                {
+                    if (group.Key == "Things")
+                    {
+                        if (String.IsNullOrWhiteSpace(Localizations[AppState.MainLocalization].records[group.Key][val.Key]
+                                .Description))
+                        {
+                            if (Localizations[MyLanguage]._hideEmpty) return false;
+                        }
+                        if (Localizations[AppState.MainLocalization].records[group.Key][val.Key].Description !=
+                            val.Value.Description) return false;
+                    }
+                    if (group.Key == "Reagents")
+                    {
+                        if (String.IsNullOrWhiteSpace(
+                                Localizations[AppState.MainLocalization].records[group.Key][val.Key].Unit))
+                        {
+                            if (Localizations[MyLanguage]._hideEmpty) return false;
+                        }
+                        if (Localizations[AppState.MainLocalization].records[group.Key][val.Key].Unit != val.Value.Unit) return false;
+                    }
+
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private string getIsSavedStateStyle(Data.Stationeers.XML.UniversalRecord record, int valueType)
     {
         switch (valueType)

@@ -17,4 +17,5 @@ public class ComponentContent
     public Dictionary<string, bool> _hideGroups = new();
     public bool _hideCounts = true;
     public bool _hideTranslated = false;
+    public bool _hideEmpty = true;
 }

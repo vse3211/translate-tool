@@ -44,6 +44,9 @@ else
         <FluentButton @onclick="() => { Localizations[MyLanguage]._hideTranslated = !Localizations[MyLanguage]._hideTranslated; }">
             @(Localizations[MyLanguage]._hideTranslated ? "Show" : "Hide") translated
         </FluentButton>
+        <FluentButton @onclick="() => { Localizations[MyLanguage]._hideEmpty = !Localizations[MyLanguage]._hideEmpty; }">
+            @(Localizations[MyLanguage]._hideEmpty ? "Show" : "Hide") empty
+        </FluentButton>
     }
     <FluentButton @onclick="() => AppState.MainLocalization = MyLanguage">
         @(AppState.MainLocalization == MyLanguage ? "Already main" : "Make as main")
@@ -87,19 +90,7 @@ else
                     <ul>
                         @foreach (var val in group.Value)
                         {
-                            @if (val.Value.IsDescriptionChanged ||
-                                 val.Value.IsUnitChanged ||
-                                 val.Value.IsValueChanged ||
-                                 !Localizations[MyLanguage]._hideTranslated ||
-                                 (!String.IsNullOrWhiteSpace(AppState.MainLocalization) &&
-                                  Localizations[AppState.MainLocalization].records[group.Key].ContainsKey(val.Key) &&
-                                  (Localizations[AppState.MainLocalization].records[group.Key][val.Key].Value == val.Value.Value ||
-                                   (group.Key == "Things" &&
-                                    !String.IsNullOrWhiteSpace(Localizations[AppState.MainLocalization].records[group.Key][val.Key].Description) &&
-                                    Localizations[AppState.MainLocalization].records[group.Key][val.Key].Description == val.Value.Description) ||
-                                   (group.Key == "Reagents" &&
-                                    !String.IsNullOrWhiteSpace(Localizations[AppState.MainLocalization].records[group.Key][val.Key].Unit) &&
-                                    Localizations[AppState.MainLocalization].records[group.Key][val.Key].Unit == val.Value.Unit))))
+                            @if (CanShowRow(group, val))
                             {
                                 <li>
                                     @val.Key:
