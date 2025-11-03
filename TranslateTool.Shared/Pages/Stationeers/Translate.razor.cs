@@ -21,7 +21,7 @@ public partial class Translate : ComponentBase
     public required State AppState { get; set; }
 
     [Parameter]
-    public required Dictionary<string, ComponentContent>
+    public required Dictionary<string, TranslateContent>
         Localizations { get; set; }
 
     async Task OnFileUploadedAsync(FluentInputFileEventArgs inputFile)
@@ -260,23 +260,10 @@ public partial class Translate : ComponentBase
         return true;
     }
 
-    private string getIsSavedStateStyle(Data.Stationeers.XML.UniversalRecord record, int valueType)
+    private void SelectWord(string group, string word)
     {
-        switch (valueType)
-        {
-            case 0:
-                if (record.IsValueChanged) return _isNotSavedStateStyle;
-                break;
-            case 1:
-                if (record.IsUnitChanged) return _isNotSavedStateStyle;
-                break;
-            case 2:
-                if (record.IsDescriptionChanged) return _isNotSavedStateStyle;
-                break;
-        }
-        return _isSavedStateStyle;
+        AppState.SelectedWord.Group = group;
+        AppState.SelectedWord.Word = word;
+        StateHasChanged();
     }
-
-    private string _isSavedStateStyle = "border-color: black; border-width: 1px;";
-    private string _isNotSavedStateStyle = "border-color: palegreen; border-width: 2px;";
 }

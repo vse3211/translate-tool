@@ -3,5 +3,5 @@
 public class State
 {
     public string MainLocalization = "";
-    public string SelectedWord = "";
+    public SelectedWord SelectedWord = new();
 }

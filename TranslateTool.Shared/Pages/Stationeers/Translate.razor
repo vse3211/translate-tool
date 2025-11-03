@@ -1,4 +1,5 @@
-﻿@if (!Localizations[MyLanguage].isFileLoaded)
+﻿@using TranslateTool.Shared.Data.Stationeers
+@if (!Localizations[MyLanguage].isFileLoaded)
 {
     <FluentInputFile
         Id="translate-upload"
@@ -30,7 +31,7 @@
 }
 else
 {
-    <h1>@MyLanguage</h1>
+    <h1 class="dark:text-white">@MyLanguage</h1>
     <FluentButton Color="red" @onclick="() => { Localizations[MyLanguage] = new(); StateHasChanged(); }">Reset</FluentButton>
     <FluentButton Color="goldenrod" @onclick="StateHasChanged">Refresh UI</FluentButton>
     <FluentButton @onclick="() => { Localizations[MyLanguage]._hideCounts = !Localizations[MyLanguage]._hideCounts; }">
@@ -59,15 +60,15 @@ else
         <table>
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Count</th>
+                <th class="dark:text-white">Name</th>
+                <th class="dark:text-white">Count</th>
             </tr>
             <tr>
                 @foreach (var g in Localizations[MyLanguage].records)
                 {
                     <tr>
-                        <td>@g.Key</td>
-                        <td>@g.Value.Count</td>
+                        <td class="dark:text-white">@g.Key</td>
+                        <td class="dark:text-white">@g.Value.Count</td>
                     </tr>
                 }
             </tr>
@@ -82,34 +83,37 @@ else
                 <FluentButton @onclick="() => { Localizations[MyLanguage]._hideGroups[group.Key] = !Localizations[MyLanguage]._hideGroups[group.Key]; }">
                     @(Localizations[MyLanguage]._hideGroups[group.Key] ? "+" : "-")
                 </FluentButton>
-                <h3>@group.Key: @Localizations[MyLanguage].records[group.Key].Count</h3>
+                <h3 class="dark:text-white">@group.Key: @Localizations[MyLanguage].records[group.Key].Count</h3>
             </div>
             <div desc="@group.Key">
                 @if (!Localizations[MyLanguage]._hideGroups[group.Key])
                 {
                     <ul>
-                        @foreach (var val in group.Value)
+                        @foreach (var word in group.Value)
                         {
-                            @if (CanShowRow(group, val))
+                            @if (CanShowRow(group, word))
                             {
                                 <li>
-                                    @val.Key:
-                                    <textarea @bind="val.Value.Value" style="@getIsSavedStateStyle(val.Value, 0)" placeholder="Value" alt="Value"></textarea>
-                                    @if (val.Value.Description is not null && group.Key == "Things")
+                                    <button @onclick="() => SelectWord(group.Key, word.Key)" data-modal-target="word-modal" data-modal-toggle="word-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                        Select
+                                    </button>
+                                    <p class="dark:text-white">@word.Key:</p>
+                                    <textarea class="dark:text-white" @bind="word.Value.Value" style="@SharedFunctions.GetIsSavedStateStyle(word.Value, 0)" placeholder="Value" alt="Value"></textarea>
+                                    @if (word.Value.Description is not null && group.Key == "Things")
                                     {
-                                        <textarea @bind="val.Value.Description" style="@getIsSavedStateStyle(val.Value, 2)" placeholder="Description"></textarea>
+                                        <textarea class="dark:text-white" @bind="word.Value.Description" style="@SharedFunctions.GetIsSavedStateStyle(word.Value, 2)" placeholder="Description"></textarea>
                                     }
                                     else if (group.Key == "Things")
                                     {
-                                        <button @onclick="() => { val.Value.Description = string.Empty; }">add desc.</button>
+                                        <button class="dark:text-white" @onclick="() => { word.Value.Description = string.Empty; }">add desc.</button>
                                     }
-                                    @if (val.Value.Unit is not null && group.Key == "Reagents")
+                                    @if (word.Value.Unit is not null && group.Key == "Reagents")
                                     {
-                                        <textarea @bind="val.Value.Unit" style="@getIsSavedStateStyle(val.Value, 1)" placeholder="Unit"></textarea>
+                                        <textarea class="dark:text-white" @bind="word.Value.Unit" style="@SharedFunctions.GetIsSavedStateStyle(word.Value, 1)" placeholder="Unit"></textarea>
                                     }
                                     else if (group.Key == "Reagents")
                                     {
-                                        <button @onclick="() => { val.Value.Unit = string.Empty; }">add unit</button>
+                                        <button class="dark:text-white" @onclick="() => { word.Value.Unit = string.Empty; }">add unit</button>
                                     }
                                 </li>
                             }
