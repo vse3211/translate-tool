@@ -5,7 +5,7 @@ using TranslateTool.Shared.Data.Stationeers;
 
 namespace TranslateTool.Shared.Data.Stationeers;
 
-public class ComponentContent
+public class TranslateContent
 {
     public FluentInputFile? myFileByStream = default!;
     public bool isFileLoaded = false;
